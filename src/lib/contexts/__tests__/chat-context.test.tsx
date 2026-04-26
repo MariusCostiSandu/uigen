@@ -46,9 +46,7 @@ describe("ChatContext", () => {
 
   const mockUseAIChat = {
     messages: [],
-    input: "",
-    handleInputChange: vi.fn(),
-    handleSubmit: vi.fn(),
+    sendMessage: vi.fn(),
     status: "idle",
   };
 
@@ -99,11 +97,6 @@ describe("ChatContext", () => {
     expect(useAIChat).toHaveBeenCalledWith({
       api: "/api/chat",
       initialMessages,
-      body: {
-        files: mockFileSystem.serialize(),
-        projectId: "test-project",
-      },
-      onToolCall: expect.any(Function),
     });
 
     expect(screen.getByTestId("messages").textContent).toBe("2");
@@ -177,12 +170,25 @@ describe("ChatContext", () => {
     expect(form).toBeDefined();
   });
 
-  test("handles tool calls", () => {
-    let onToolCallHandler: any;
+  test("handles tool calls", async () => {
+    const toolInvocation = {
+      toolCallId: "call-123",
+      toolName: "str_replace_editor",
+      args: { file: "/App.jsx" },
+      state: "result",
+      result: "Success",
+    };
 
-    (useAIChat as any).mockImplementation((config: any) => {
-      onToolCallHandler = config.onToolCall;
-      return mockUseAIChat;
+    (useAIChat as any).mockReturnValue({
+      ...mockUseAIChat,
+      messages: [
+        {
+          id: "1",
+          role: "assistant",
+          content: "",
+          parts: [{ type: "tool-invocation", toolInvocation }],
+        },
+      ],
     });
 
     render(
@@ -191,9 +197,11 @@ describe("ChatContext", () => {
       </ChatProvider>
     );
 
-    const toolCall = { toolName: "test", args: {} };
-    onToolCallHandler({ toolCall });
-
-    expect(mockHandleToolCall).toHaveBeenCalledWith(toolCall);
+    await waitFor(() => {
+      expect(mockHandleToolCall).toHaveBeenCalledWith({
+        toolName: "str_replace_editor",
+        args: { file: "/App.jsx" },
+      });
+    });
   });
 });
