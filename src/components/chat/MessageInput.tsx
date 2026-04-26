@@ -4,14 +4,14 @@ import { ChangeEvent, FormEvent, KeyboardEvent } from "react";
 import { Send } from "lucide-react";
 
 interface MessageInputProps {
-  input: string;
+  input?: string;
   handleInputChange: (e: ChangeEvent<HTMLTextAreaElement>) => void;
   handleSubmit: (e: FormEvent<HTMLFormElement>) => void;
   isLoading: boolean;
 }
 
 export function MessageInput({
-  input,
+  input = "",
   handleInputChange,
   handleSubmit,
   isLoading,

@@ -1,0 +1,19 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(node -e \"const pkg = require\\('./node_modules/ai/package.json'\\); console.log\\(JSON.stringify\\(pkg.exports ? Object.keys\\(pkg.exports\\) : 'no exports field', null, 2\\)\\)\")",
+      "Bash(npm show *)",
+      "Bash(npm install *)",
+      "Bash(node *)",
+      "Bash(npx vitest *)",
+      "mcp__playright",
+      "Bash(start *)",
+      "mcp__playwright",
+      "Bash(curl -s -N -X POST http://localhost:3000/api/chat -H 'Content-Type: application/json' -d '{\"messages\":[{\"role\":\"user\",\"content\":\"Create a pricing card component\"}],\"files\":{}}')",
+      "Bash(grep -v \"^$\")",
+      "Bash(curl -v -X POST http://localhost:3000/api/chat -H 'Content-Type: application/json' -d '{\"messages\":[{\"role\":\"user\",\"content\":\"Create a pricing card component\"}],\"files\":{}}')",
+      "Bash(curl *)",
+      "Bash(grep -oP '\"file_text\":\"[^\"]{1,3000}')"
+    ]
+  }
+}

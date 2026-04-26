@@ -1,7 +1,7 @@
 "use client";
 
 import { Loader2 } from "lucide-react";
-import type { ToolInvocation } from "ai";
+import type { UIToolInvocation } from "ai";
 
 function basename(path: string): string {
   return path.split("/").pop() || path;
@@ -35,7 +35,7 @@ export function getToolLabel(toolName: string, args: unknown): string {
 }
 
 interface ToolCallBadgeProps {
-  tool: ToolInvocation;
+  tool: UIToolInvocation<any>;
 }
 
 export function ToolCallBadge({ tool }: ToolCallBadgeProps) {
